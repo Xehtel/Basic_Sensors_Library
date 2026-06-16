@@ -3,7 +3,7 @@
 #Last Edit: Xehtel on 6/16/2026
 #================================================================================================#
 #Written with HD44780 Datasheet: https://www.crystalfontz.com/controllers/datasheet-viewer.php?id=97
-#With Help from Claude for Choosing the Correct 4-bit Values
+#With Help from Claude for Choosing the Correct 4-bit Values in Reference to DS Table 6
 #================================================================================================#
 #Imports
 from machine import Pin
@@ -60,9 +60,9 @@ class LcdParallel:
 
     def _init_lcd(self): #HD44780 4-bit Initialization
         self.rs.value(0)
-        self._write4(0x03); sleep_ms(5)
-        self._write4(0x03); sleep_ms(5)
-        self._write4(0x03); sleep_ms(1)
+        self._write4(0x03); sleep_ms(5) #Start Resetting
+        self._write4(0x03); sleep_ms(5) #Datasheet Guarantees at Least 1 Valid 8-bit Reset
+        self._write4(0x03); sleep_ms(1) #Confirms 8-bit Mode is Fully Established
         self._write4(0x02) #Switch to 4-bit
         self.command(0x28) #2 Lines, 5x8 Font
         self.command(0x0C) #Display On, Cursor Off
